@@ -1,5 +1,10 @@
 import os
 from dotenv import load_dotenv
+from pathlib import Path
+
+# ! Hack to load env file properly
+BASE_DIR = Path(__file__).resolve().parent.parent
+path = os.path.join(BASE_DIR, ".env")
 
 load_dotenv()
 
