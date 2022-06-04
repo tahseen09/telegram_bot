@@ -3,5 +3,4 @@ def send_daily_hadith():
     send_hadith_to_all_users()
 
 
-if __name__ == "__main__":
-    send_daily_hadith()
+send_daily_hadith()
