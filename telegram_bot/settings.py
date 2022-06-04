@@ -27,7 +27,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_crontab',
     'hadith'
 ]
 
@@ -89,11 +88,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
-]
-
-
-CRONJOBS = [
-    ('* * * * *', 'hadith.cron.send_daily_hadith')
 ]
 
 # Internationalization
