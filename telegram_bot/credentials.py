@@ -6,7 +6,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 path = os.path.join(BASE_DIR, ".env")
 
-load_dotenv()
+load_dotenv(path)
 
 APP_URL = os.environ["APP_URL"]
 
