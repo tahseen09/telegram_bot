@@ -2,6 +2,7 @@ import random
 import telegram
 
 from hadith.apps import HadithConfig
+from hadith.constants import START_COMMAND, SUBSCRIBE_COMMAND
 from hadith.models import Chat
 from telegram_bot.credentials import BOT_TOKEN, APP_URL
 
@@ -16,14 +17,13 @@ def get_random_hadith() -> str:
 
 
 def create_chat(chat_id: str) -> None:
-    chat = Chat(chat_id=chat_id)
-    chat.save()
+    chat, _ = Chat.objects.get_or_create(chat_id=chat_id)
 
 
 def get_response(text: str) -> str:
     text_response_map = {
-        "/start": "Assalamu-aliakum! I am Tahseen Rahman.\nUse this bot to read Hadiths and make your day better. You can message anything and you shall receive a hadith in response. Or you can also message /subscribe to receive Hadiths Daily. Jazakallah.",
-        "/subscribe": "Jazakallah. You have been subscribed to daily hadiths. To read a hadith right now, message anything.",
+        START_COMMAND: "Assalamu-aliakum! I am Tahseen Rahman.\nUse this bot to read Hadiths and make your day better.\nYou can message anything and you shall receive a hadith in response. Or you can also message /subscribe to receive Hadiths Daily. Jazakallah.",
+        SUBSCRIBE_COMMAND: "Jazakallah. You have been subscribed to daily hadiths. To read a hadith right now, message anything.",
     }
     return text_response_map.get(text, get_random_hadith())
 
@@ -49,3 +49,10 @@ def send_hadith_to_all_users():
     hadith = get_random_hadith()
     for chat in chats:
         send_message(chat.chat_id, hadith)
+
+
+def get_chat(chat_id: str) -> Chat:
+    try:
+        return Chat.objects.get(chat_id=chat_id)
+    except Chat.DoesNotExist:
+        return None
