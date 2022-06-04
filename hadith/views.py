@@ -16,9 +16,12 @@ def respond(request):
     update = telegram.Update.de_json(request_body, bot)
     chat_id = update.message.chat.id
     # msg_id = update.message.message_id
-    # text = update.message.text.encode('utf-8').decode()
-    hadith = get_random_hadith()
-    bot.sendMessage(chat_id=chat_id, text=hadith)
+    text = update.message.text.encode('utf-8').decode()
+    if text == "/start":
+        response = "Assalamu-aliakum! Use this bot to read Hadiths and make your day better. You can message anything and you shall receive a hadith in response. Jazakallah"
+    else:
+        response = get_random_hadith()
+    bot.sendMessage(chat_id=chat_id, text=response)
     return HttpResponse()
 
 
