@@ -38,7 +38,7 @@ def update_language_preference(
 
 
 def identify_command(text: str) -> Optional[str]:
-    command = text.split()[0]
+    command = text.split('_')[0]
     return command.lower()
 
 
@@ -54,7 +54,7 @@ def get_available_languages_response_copy() -> str:
     ]
 
     supported_languages = ", ".join(supported_languages)
-    return f"We currently support {supported_languages}.\nTo change your language preference, message /language <code>.\nFor example, if you want to change your language of hadeeth to URDU, message\n/language ur."
+    return f"We currently support {supported_languages}.\nTo change your language preference, message /language_<code>.\nFor example, if you want to change your language of hadeeth to URDU, message\n/language_ur."
 
 
 def handle_subscribe_command(text: str, chat_id: str) -> list:
@@ -64,7 +64,7 @@ def handle_subscribe_command(text: str, chat_id: str) -> list:
 
 
 def handle_language_command(text: str, chat_id: str) -> list:
-    language = text.split()[-1].lower()
+    language = text.split('_')[-1].lower()
     if language not in SUPPORTED_LANGUAGES:
         response = get_available_languages_response_copy()
     else:
