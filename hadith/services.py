@@ -70,7 +70,7 @@ def handle_language_command(text: str, chat_id: str) -> list:
     else:
         create_chat(chat_id)
         update_language_preference(chat_id, language)
-        response = f"Your preferred language of hadiths has been changed to {language}"
+        response = f"Your preferred language of hadiths has been changed to {SUPPORTED_LANGUAGES[language]}"
     return [response]
 
 
@@ -89,7 +89,7 @@ def handle_no_command(text: str, chat_id: str):
     return [get_random_hadith(language)]
 
 
-def get_response(text: str, chat_id: str) -> list:
+def get_responses(text: str, chat_id: str) -> list:
     if not text.startswith("/"):
         return handle_no_command(text, chat_id)
 
