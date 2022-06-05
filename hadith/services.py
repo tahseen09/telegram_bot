@@ -95,7 +95,7 @@ def get_responses(text: str, chat_id: str) -> list:
 
     command = identify_command(text)
     if command not in SUPPORTED_COMMANDS:
-        return handle_unknown_command()
+        return handle_unknown_command(text, chat_id)
 
     command_handler_map = {
         START_COMMAND: handle_start_command,
