@@ -54,7 +54,7 @@ def get_available_languages_response_copy() -> str:
     ]
 
     supported_languages = ", ".join(supported_languages)
-    return f"We currently support {supported_languages}.\nTo change your language preference, click on the highlighted lannguage commands in this message"
+    return f"We currently support {supported_languages}.\nTo change your language preference, click on any of the highlighted language commands in this message"
 
 
 def handle_subscribe_command(text: str, chat_id: str) -> list:
