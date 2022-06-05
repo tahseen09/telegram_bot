@@ -12,6 +12,7 @@ from hadith.services import (
 )
 from hadith.constants import LANGUAGE_COMMAND, SUBSCRIBE_COMMAND, SUPPORTED_LANGUAGES
 
+
 @csrf_exempt
 def respond(request):
     request_body = json.loads(request.body)
@@ -19,19 +20,9 @@ def respond(request):
     chat_id = update.message.chat.id
     # msg_id = update.message.message_id
     text = update.message.text.encode("utf-8").decode()
-    response = get_response(text, chat_id)
-
-    if text == SUBSCRIBE_COMMAND:
-        create_chat(chat_id)
-
-    if LANGUAGE_COMMAND in text:
-        language = text.split()[-1]
-        language = language.lower()
-        if language in SUPPORTED_LANGUAGES:
-            create_chat(chat_id)
-            update_language_preference(chat_id, language)
-
-    send_message(chat_id, response)
+    responses = get_response(text, chat_id)
+    for response in responses:
+        send_message(chat_id, response)
     return HttpResponse()
 
 
