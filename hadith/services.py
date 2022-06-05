@@ -37,7 +37,7 @@ def get_response(text: str, chat_id: str) -> str:
         text = text.split()[0]
         if language.lower() not in SUPPORTED_LANGUAGES:
             return f"We currently support only English(en) and Urdu(ur). For example - to choose english language type {LANGUAGE_COMMAND} en and send."
-        return text_response_map[LANGUAGE_COMMAND].format(SUPPORTED_LANGUAGES[language])
+        return text_response_map[LANGUAGE_COMMAND].format(language=SUPPORTED_LANGUAGES[language])
 
     language = Chat.Language.ENGLISH
     chat = get_chat(chat_id)
