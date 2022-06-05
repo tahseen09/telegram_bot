@@ -54,11 +54,11 @@ def get_available_languages_response_copy() -> str:
     ]
 
     supported_languages = ", ".join(supported_languages)
-    return f"We currently support {supported_languages}.\n To change your language preference, message /language <code>. For example, if you want to change your language of hadeeth to URDU, message /language ur."
+    return f"We currently support {supported_languages}.\nTo change your language preference, message /language <code>.\nFor example, if you want to change your language of hadeeth to URDU, message\n/language ur."
 
 
 def handle_subscribe_command(text: str, chat_id: str) -> list:
-    response = "Jazakallah. You have been subscribed to daily hadiths. To read a hadith right now, message anything"
+    response = "Jazakallah. You have been subscribed to daily hadiths.\nTo read a hadith right now, message anything"
     lang_response = get_available_languages_response_copy()
     return [response, lang_response]
 
@@ -70,14 +70,14 @@ def handle_language_command(text: str, chat_id: str) -> list:
     else:
         create_chat(chat_id)
         update_language_preference(chat_id, language)
-        response = f"Your preferred language of hadiths has been changed to {SUPPORTED_LANGUAGES[language]}"
+        response = f"Your preferred language has been changed to {SUPPORTED_LANGUAGES[language]}"
     return [response]
 
 
 def handle_unknown_command(text: str, chat_id: str) -> list:
     supported_commands = ", ".join(SUPPORTED_COMMANDS)
     return [
-        f"Uh-Oh! Looks like you have used a command that we don't support.\nThe only commands we support are {supported_commands}. If you are confused, let's try again with the /start command."
+        f"Uh-Oh! Looks like you have used a command that we don't support.\nThe only commands we support are {supported_commands}.\nIf you are confused, let's try again with the /start command."
     ]
 
 
