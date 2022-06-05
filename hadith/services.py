@@ -50,11 +50,11 @@ def handle_start_command(text: str, chat_id: str) -> str:
 
 def get_available_languages_response_copy() -> str:
     supported_languages = [
-        f"{name}({code})" for code, name in SUPPORTED_LANGUAGES.items()
+        f"{name}(/language_{code})" for code, name in SUPPORTED_LANGUAGES.items()
     ]
 
     supported_languages = ", ".join(supported_languages)
-    return f"We currently support {supported_languages}.\nTo change your language preference, message /language_<code>.\nFor example, if you want to change your language of hadeeth to URDU, message\n/language_ur."
+    return f"We currently support {supported_languages}.\nTo change your language preference, click on the highlighted lannguage commands in this message"
 
 
 def handle_subscribe_command(text: str, chat_id: str) -> list:
