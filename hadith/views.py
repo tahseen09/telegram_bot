@@ -8,8 +8,9 @@ from hadith.services import (
     get_telegram_update_object,
     send_message,
     set_telegram_webhook,
+    update_language_preference,
 )
-from hadith.constants import SUBSCRIBE_COMMAND
+from hadith.constants import LANGUAGE_COMMAND, SUBSCRIBE_COMMAND, SUPPORTED_LANGUAGES
 
 @csrf_exempt
 def respond(request):
@@ -18,10 +19,17 @@ def respond(request):
     chat_id = update.message.chat.id
     # msg_id = update.message.message_id
     text = update.message.text.encode("utf-8").decode()
-    response = get_response(text)
+    response = get_response(text, chat_id)
 
     if text == SUBSCRIBE_COMMAND:
         create_chat(chat_id)
+
+    if LANGUAGE_COMMAND in text:
+        language = text.split()[-1]
+        language = language.lower()
+        if language in SUPPORTED_LANGUAGES:
+            create_chat(chat_id)
+            update_language_preference(chat_id, language)
 
     send_message(chat_id, response)
     return HttpResponse()
