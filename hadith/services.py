@@ -20,7 +20,7 @@ def get_random_hadith(language: Chat.Language = Chat.Language.ENGLISH) -> str:
     hadiths_map = HadithConfig.hadiths
     hadiths = hadiths_map[language]
     hadith = random.choice(hadiths)
-    return hadith["title"]
+    return f"{hadith['hadeeth']}\n\n{hadith['attribution']}"
 
 
 def create_chat(chat_id: str) -> Chat:
