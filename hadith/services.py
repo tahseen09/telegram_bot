@@ -38,13 +38,13 @@ def update_language_preference(
 
 
 def identify_command(text: str) -> Optional[str]:
-    command = text.split('_')[0]
+    command = text.split("_")[0]
     return command.lower()
 
 
-def handle_start_command(text: str, chat_id: str) -> str:
+def handle_start_command(text: str, chat_id: str, name: str = "") -> str:
     return [
-        f"Assalamu-aliakum! I am Tahseen Rahman, the creator of this bot.\nUse this bot to read Hadiths and make your day better.\n To receive hadiths daily, message {SUBSCRIBE_COMMAND}.\nTo receive a hadith right away, message hadith.\nJazakallah."
+        f"Assalamu-aliakum {name}! I am Tahseen Rahman, the creator of this bot.\nUse this bot to read Hadiths and make your day better.\n To receive hadiths daily, message {SUBSCRIBE_COMMAND}.\nTo receive a hadith right away, message hadith.\nJazakallah."
     ]
 
 
@@ -57,14 +57,15 @@ def get_available_languages_response_copy() -> str:
     return f"We currently support {supported_languages}.\nTo change your language preference, click on any of the highlighted language commands in this message"
 
 
-def handle_subscribe_command(text: str, chat_id: str) -> list:
-    response = "Jazakallah. You have been subscribed to daily hadiths.\nTo read a hadith right now, message anything"
+def handle_subscribe_command(text: str, chat_id: str, name: str = "") -> list:
+    chat = create_chat(chat_id)
+    response = f"Jazakallah {name}. You have been subscribed to daily hadiths.\nTo read a hadith right now, message anything"
     lang_response = get_available_languages_response_copy()
     return [response, lang_response]
 
 
-def handle_language_command(text: str, chat_id: str) -> list:
-    language = text.split('_')[-1].lower()
+def handle_language_command(text: str, chat_id: str, name: str = "") -> list:
+    language = text.split("_")[-1].lower()
     if language not in SUPPORTED_LANGUAGES:
         response = get_available_languages_response_copy()
     else:
@@ -74,24 +75,27 @@ def handle_language_command(text: str, chat_id: str) -> list:
     return [response]
 
 
-def handle_unknown_command(text: str, chat_id: str) -> list:
+def handle_unknown_command(text: str, chat_id: str, name: str = "") -> list:
     supported_commands = ", ".join(SUPPORTED_COMMANDS)
     return [
         f"Uh-Oh! Looks like you have used a command that we don't support.\nThe only commands we support are {supported_commands}.\nIf you are confused, let's try again with the /start command."
     ]
 
 
-def handle_no_command(text: str, chat_id: str):
+def handle_no_command(text: str, chat_id: str, name: str):
     chat = get_chat(chat_id)
     language = Chat.Language.ENGLISH
+    responses = [get_random_hadith(language)]
     if chat:
         language = chat.language
-    return [get_random_hadith(language)]
+    else:
+        responses.extend(handle_start_command(text, chat_id, name))
+    return responses
 
 
-def get_responses(text: str, chat_id: str) -> list:
+def get_responses(text: str, chat_id: str, name: str = "") -> list:
     if not text.startswith("/"):
-        return handle_no_command(text, chat_id)
+        return handle_no_command(text, chat_id, name)
 
     command = identify_command(text)
     if command not in SUPPORTED_COMMANDS:
@@ -103,7 +107,7 @@ def get_responses(text: str, chat_id: str) -> list:
         LANGUAGE_COMMAND: handle_language_command,
     }
 
-    return command_handler_map[command](text, chat_id)
+    return command_handler_map[command](text, chat_id, name)
 
 
 def send_message(chat_id: str, message: str) -> bool:

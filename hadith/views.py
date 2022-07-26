@@ -16,11 +16,12 @@ def respond(request):
     update = get_telegram_update_object(request_body)
     try:
         chat_id = update.message.chat.id
+        name = f"{update.message.chat.first_name} {update.message.chat.first_name}"
     except AttributeError:
         return HttpResponseBadRequest()
     # msg_id = update.message.message_id
     text = update.message.text.encode("utf-8").decode()
-    responses = get_responses(text, chat_id)
+    responses = get_responses(text, chat_id, name)
     for response in responses:
         send_message(chat_id, response)
     return HttpResponse()
