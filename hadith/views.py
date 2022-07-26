@@ -16,7 +16,7 @@ def respond(request):
     update = get_telegram_update_object(request_body)
     try:
         chat_id = update.message.chat.id
-        name = f"{update.message.chat.first_name} {update.message.chat.first_name}"
+        name = f"{update.message.chat.first_name} {update.message.chat.last_name}"
     except AttributeError:
         return HttpResponseBadRequest()
     # msg_id = update.message.message_id
