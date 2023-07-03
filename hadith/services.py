@@ -145,8 +145,12 @@ def send_hadith_to_all_users() -> None:
         send_message(chat.chat_id, hadith)
 
 
-def get_chat(chat_id: str) -> Optional[Chat]:
+def get_chat(chat_id: str, name: str=None) -> Optional[Chat]:
     try:
-        return Chat.objects.get(chat_id=chat_id)
+        chat = Chat.objects.get(chat_id=chat_id)
+        if chat.name is None and isinstance(name, str) and name:
+            chat.name = name[:128]
+            chat.save()
+        return chat
     except Chat.DoesNotExist:
         return None
