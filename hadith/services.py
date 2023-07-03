@@ -23,8 +23,11 @@ def get_random_hadith(language: Chat.Language = Chat.Language.ENGLISH) -> str:
     return f"{hadith['hadeeth']}\n\n{hadith['attribution']}"
 
 
-def create_chat(chat_id: str) -> Chat:
+def create_chat(chat_id: str, name: str=None) -> Chat:
     chat, _ = Chat.objects.get_or_create(chat_id=chat_id)
+    if isinstance(name, str) and name and chat.name is None:
+        chat.name = name[:128]
+        chat.save()
     return chat
 
 
@@ -59,6 +62,10 @@ def get_available_languages_response_copy() -> str:
 
 def handle_subscribe_command(text: str, chat_id: str, name: str = "") -> list:
     chat = create_chat(chat_id)
+    if chat.name is None:
+        chat.name = name
+        chat.save()
+
     response = f"Jazakallah {name}. You have been subscribed to daily hadiths.\nTo read a hadith right now, message anything"
     lang_response = get_available_languages_response_copy()
     return [response, lang_response]
